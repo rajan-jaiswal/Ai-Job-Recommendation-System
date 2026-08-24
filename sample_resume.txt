@@ -1,0 +1,59 @@
+JOHN DOE
+Software Engineer
+john.doe@email.com | (555) 123-4567 | San Francisco, CA
+LinkedIn: linkedin.com/in/johndoe | GitHub: github.com/johndoe
+
+PROFESSIONAL SUMMARY
+Experienced software engineer with 3+ years of experience in full-stack web development, 
+specializing in Python, JavaScript, and cloud technologies. Passionate about building 
+scalable applications and working with modern frameworks.
+
+TECHNICAL SKILLS
+Programming Languages: Python, JavaScript, TypeScript, Java, SQL, HTML, CSS
+Frameworks & Libraries: React, Node.js, Express.js, Django, Flask, Spring Boot
+Databases: PostgreSQL, MongoDB, Redis, MySQL
+Cloud & DevOps: AWS, Docker, Kubernetes, Jenkins, CI/CD
+Tools & Technologies: Git, Linux, REST APIs, GraphQL, Microservices
+
+EDUCATION
+Bachelor of Science in Computer Science
+University of California, Berkeley
+Graduated: May 2020 | GPA: 3.8/4.0
+
+PROFESSIONAL EXPERIENCE
+
+Software Engineer | TechCorp Inc. | Jan 2021 - Present
+• Developed and maintained web applications using Python, Django, and React
+• Implemented RESTful APIs and microservices architecture
+• Collaborated with cross-functional teams using Agile methodologies
+• Improved application performance by 40% through code optimization
+• Mentored junior developers and conducted code reviews
+
+Software Developer Intern | StartupXYZ | Jun 2020 - Dec 2020
+• Built responsive web interfaces using React and JavaScript
+• Worked with PostgreSQL database design and optimization
+• Participated in daily standups and sprint planning sessions
+• Contributed to open-source projects and documentation
+
+PROJECTS
+E-Commerce Platform | Personal Project | 2021
+• Full-stack web application built with Django and React
+• Integrated payment processing with Stripe API
+• Implemented user authentication and authorization
+• Deployed on AWS with Docker containerization
+
+Data Analysis Dashboard | University Project | 2019
+• Python application for analyzing sales data using pandas and matplotlib
+• Created interactive visualizations with Plotly
+• Implemented machine learning models for sales prediction
+
+CERTIFICATIONS
+AWS Certified Developer Associate (2022)
+Google Cloud Professional Developer (2021)
+
+INTERESTS
+Web Development, Machine Learning, Open Source, Cloud Computing, 
+Mobile App Development, Data Science, Artificial Intelligence
+
+LANGUAGES
+English (Native), Spanish (Conversational)

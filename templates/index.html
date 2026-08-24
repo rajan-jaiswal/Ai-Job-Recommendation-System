@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Career Recommendation System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-graduation-cap me-2"></i>
+                Smart Career Guide
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#recommendations">Get Recommendations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#admin">Admin</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold text-primary mb-4">
+                        Find Your Perfect Career Path
+                    </h1>
+                    <p class="lead mb-4">
+                        Get personalized career recommendations based on your skills, interests, 
+                        and academic background using our AI-powered recommendation system.
+                    </p>
+                    <a href="#recommendations" class="btn btn-primary btn-lg">
+                        <i class="fas fa-rocket me-2"></i>
+                        Get Started
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image">
+                        <i class="fas fa-user-graduate fa-10x text-primary opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recommendations Section -->
+    <section id="recommendations" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="text-center mb-5">Get Your Career Recommendations</h2>
+                    
+                    <!-- Resume Upload Section -->
+                    <div class="card shadow-lg mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-file-upload me-2"></i>
+                                Upload Resume (Optional)
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="mb-3">
+                                        <label for="resumeFile" class="form-label">
+                                            <i class="fas fa-file-pdf me-1"></i>
+                                            Upload Resume (PDF or DOCX)
+                                        </label>
+                                        <input type="file" class="form-control" id="resumeFile" 
+                                               accept=".pdf,.docx" onchange="handleFileSelect(this)">
+                                        <div class="form-text">
+                                            Supported formats: PDF, DOCX (Max size: 16MB)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-success btn-lg w-100" 
+                                            onclick="uploadResume()" id="uploadBtn" disabled>
+                                        <i class="fas fa-upload me-2"></i>
+                                        Upload & Parse
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="resumePreview" class="mt-3" style="display: none;">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <span id="resumeInfo"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Student Profile Form -->
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-primary text-white">
+                            <h4 class="mb-0">
+                                <i class="fas fa-user-edit me-2"></i>
+                                Student Profile
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <form id="recommendationForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="skills" class="form-label">
+                                            <i class="fas fa-code me-1"></i>
+                                            Skills (comma-separated)
+                                        </label>
+                                        <textarea class="form-control" id="skills" rows="3" 
+                                                placeholder="e.g., Python, JavaScript, Machine Learning, Data Analysis" 
+                                                required></textarea>
+                                        <div class="form-text">List your technical and soft skills</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="interests" class="form-label">
+                                            <i class="fas fa-heart me-1"></i>
+                                            Interests (comma-separated)
+                                        </label>
+                                        <textarea class="form-control" id="interests" rows="3" 
+                                                placeholder="e.g., Web Development, Data Science, AI, Mobile Apps" 
+                                                required></textarea>
+                                        <div class="form-text">What areas interest you most?</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="academicBackground" class="form-label">
+                                            <i class="fas fa-graduation-cap me-1"></i>
+                                            Academic Background
+                                        </label>
+                                        <input type="text" class="form-control" id="academicBackground" 
+                                               placeholder="e.g., Computer Science, Bachelor, 3.8 GPA" 
+                                               required>
+                                        <div class="form-text">Your degree, level, and GPA</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="previousInternships" class="form-label">
+                                            <i class="fas fa-briefcase me-1"></i>
+                                            Previous Internships/Projects
+                                        </label>
+                                        <textarea class="form-control" id="previousInternships" rows="3" 
+                                                placeholder="e.g., Software Developer Intern at TechCorp, 3 months"></textarea>
+                                        <div class="form-text">Your work experience and projects</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="location" class="form-label">
+                                            <i class="fas fa-map-marker-alt me-1"></i>
+                                            Preferred Location (Optional)
+                                        </label>
+                                        <input type="text" class="form-control" id="location" 
+                                               placeholder="e.g., San Francisco, CA or Remote">
+                                        <div class="form-text">Location for job search</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-check mt-4">
+                                            <input class="form-check-input" type="checkbox" id="includeRealJobs" checked>
+                                            <label class="form-check-label" for="includeRealJobs">
+                                                <i class="fas fa-search me-1"></i>
+                                                Include Real Job Postings
+                                            </label>
+                                            <div class="form-text">Search for actual job openings</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-search me-2"></i>
+                                        Get Recommendations
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="py-5 bg-light" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-center mb-5">Your Career Recommendations</h2>
+                    <div id="recommendationsContainer"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Section -->
+    <section id="admin" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-center mb-5">Admin Dashboard</h2>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-users me-2"></i>Students Database</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>View and manage student profiles</p>
+                                    <button class="btn btn-outline-primary" onclick="loadStudents()">
+                                        <i class="fas fa-eye me-1"></i>
+                                        View Students
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5><i class="fas fa-briefcase me-2"></i>Career Roles Database</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>View and manage career roles</p>
+                                    <button class="btn btn-outline-primary" onclick="loadCareers()">
+                                        <i class="fas fa-eye me-1"></i>
+                                        View Careers
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="adminContent" class="mt-4"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Smart Career Recommendation System</h5>
+                    <p>Powered by AI and machine learning to help students find their ideal career paths.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>&copy; 2024 Career Guide. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center py-4">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mb-0">Analyzing your profile...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
