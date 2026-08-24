@@ -8,5 +8,5 @@ services:
       - key: FLASK_ENV
         value: production
       - key: RAPIDAPI_KEY
-        sync: false   # Set this manually in the Render dashboard
+        sync: false
     autoDeploy: true
