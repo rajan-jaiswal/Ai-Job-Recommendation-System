@@ -92,28 +92,17 @@ class CareerRecommendationApp {
 
         try {
             this.showLoadingModal();
-            
-            // Add a minimum loading time to make it feel responsive
-            const minLoadingTime = 1000; // 1 second minimum
-            const startTime = Date.now();
-            
+
             let recommendations;
-            // Always use regular recommendations for fastest loading
-            recommendations = await this.getRecommendations(formData);
-            
-            // If user wants real jobs, add sample jobs
             if (formData.include_real_jobs) {
-                recommendations.forEach(rec => {
-                    rec.real_jobs = this.getSampleJobsForCareer(rec.title);
-                });
+                // Update loading message to reflect real-time job search
+                const loadingText = document.querySelector('#loadingModal .modal-body p');
+                if (loadingText) loadingText.textContent = 'Searching real-time job openings for your profile...';
+                recommendations = await this.getRecommendationsWithJobs(formData);
+            } else {
+                recommendations = await this.getRecommendations(formData);
             }
-            
-            // Ensure minimum loading time for better UX
-            const elapsedTime = Date.now() - startTime;
-            if (elapsedTime < minLoadingTime) {
-                await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
-            }
-            
+
             this.displayRecommendations(recommendations);
             this.hideLoadingModal();
             this.scrollToResults();
@@ -273,10 +262,13 @@ class CareerRecommendationApp {
 
     createJobCard(job) {
         const isReal = job.is_real || false;
-        const sourceBadge = isReal ? 
-            `<span class="badge bg-success">${job.source}</span>` : 
-            `<span class="badge bg-secondary">Sample</span>`;
-        
+        const sourceBadge = isReal
+            ? `<span class="badge bg-success"><i class="fas fa-circle me-1" style="font-size:8px"></i>Live</span>`
+            : `<span class="badge bg-secondary">Sample</span>`;
+        const salary = job.salary && job.salary !== 'Not specified' ? job.salary : 'Salary not listed';
+        const desc = job.description ? job.description.substring(0, 120) + '...' : '';
+        const loc = [job.location].filter(Boolean).join('').replace(/^,\s*/, '') || 'Location not listed';
+
         return `
             <div class="col-md-6 mb-3">
                 <div class="card job-card h-100">
@@ -285,28 +277,26 @@ class CareerRecommendationApp {
                             <h6 class="card-title mb-0">${job.title}</h6>
                             ${sourceBadge}
                         </div>
-                        <p class="text-muted mb-2">
+                        <p class="text-muted mb-1">
                             <i class="fas fa-building me-1"></i>
                             ${job.company}
                         </p>
-                        <p class="text-muted mb-2">
+                        <p class="text-muted mb-1">
                             <i class="fas fa-map-marker-alt me-1"></i>
-                            ${job.location}
+                            ${loc}
                         </p>
                         <p class="text-primary mb-2">
                             <i class="fas fa-dollar-sign me-1"></i>
-                            ${job.salary}
+                            ${salary}
                         </p>
-                        <p class="small text-muted mb-3">
-                            ${job.description.substring(0, 100)}...
-                        </p>
+                        ${desc ? `<p class="small text-muted mb-3">${desc}</p>` : ''}
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">
                                 <i class="fas fa-clock me-1"></i>
-                                ${job.experience_level}
+                                ${job.experience_level || 'Mid-Level'}
                             </small>
-                            ${isReal ? `
-                                <a href="${job.apply_url}" target="_blank" class="btn btn-sm btn-primary">
+                            ${job.apply_url ? `
+                                <a href="${job.apply_url}" target="_blank" rel="noopener" class="btn btn-sm btn-primary">
                                     <i class="fas fa-external-link-alt me-1"></i>
                                     Apply Now
                                 </a>

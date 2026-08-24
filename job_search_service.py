@@ -264,12 +264,28 @@ class JobSearchService:
     
     def _format_jsearch_job(self, job: Dict) -> Dict:
         """Format job data from JSearch API"""
+        city = job.get('job_city') or ''
+        state = job.get('job_state') or ''
+        country = job.get('job_country') or ''
+        location_parts = [p for p in [city, state, country] if p]
+        location = ', '.join(location_parts) if location_parts else (job.get('job_is_remote') and 'Remote' or 'Not specified')
+
+        min_sal = job.get('job_min_salary')
+        max_sal = job.get('job_max_salary')
+        sal_period = job.get('job_salary_period', '')
+        if min_sal and max_sal:
+            salary = f"${int(min_sal):,} - ${int(max_sal):,}{' / ' + sal_period if sal_period else ''}"
+        elif min_sal:
+            salary = f"${int(min_sal):,}+"
+        else:
+            salary = 'Not specified'
+
         return {
             'job_id': job.get('job_id', ''),
             'title': job.get('job_title', ''),
             'company': job.get('employer_name', ''),
-            'location': job.get('job_city', '') + ', ' + job.get('job_state', ''),
-            'salary': job.get('job_salary', 'Not specified'),
+            'location': location,
+            'salary': salary,
             'description': job.get('job_description', ''),
             'requirements': self._extract_requirements(job.get('job_description', '')),
             'job_type': job.get('job_employment_type', 'Full-time'),
